@@ -45,7 +45,7 @@ function ImageDisplay(props) {
         <img className="w-full h-full animate-spin " src={hamsterWheelSVG} alt="hamster wheel" />
       </div>
       <div className={(loading ? "hidden" : "block") + " h-2/3 w-2/3 flex items-center justify-center"}>
-        <img className="w-auto h-auto rounded-lg object-contain" 
+        <img className="w-auto h-auto max-h-full rounded-lg object-contain" 
           src={props.image} alt='hamster'
           onLoad={imageLoaded}
           />
