@@ -7,18 +7,22 @@ import refreshSVG from './refresh.svg';
 import hamsterWheelSVG from './hamsterWheel.svg';
 import mailOpen from './mailOpen.svg';
 import mailClosed from './mailClosed.svg';
+import chevronLeft from './chevronLeft.svg';
+import chevronRight from './chevronRight.svg';
+import colorIcon from './color.svg';
 
 const backgroundColors = [
   "bg-rose-200",
-  "bg-purple-200",
-  "bg-fuchsia-200",
-  "bg-blue-200",
-  "bg-green-200",
-  "bg-yellow-200",
   "bg-red-200",
   "bg-orange-200",
-  "bg-teal-200",
-  "bg-pink-200"
+  "bg-yellow-200",
+  "bg-green-200",
+  "bg-emerald-200",
+  "bg-blue-200",
+  "bg-fuchsia-200",
+  "bg-purple-200",
+  "bg-violet-200",
+  "bg-pink-200",
 ];
 
 function ImageDisplay(props) {
@@ -26,6 +30,9 @@ function ImageDisplay(props) {
   const imageLoaded = () => {
     setLoading(false);
   };
+  useEffect(() => {
+    setLoading(true);
+  }, [props.image]);
   return (
     <div className='bg-transparent flex h-full w-full absolute items-center justify-center'>
       <div className={loading ? "block" : "hidden"}>
@@ -76,8 +83,8 @@ function PopUpMessage() {
 function App() {
 
   const [image, setImage] = useState(null);
-  const [bgColor, setBgColor] = useState(null);
-
+  const [bgColor, setBgColor] = useState(Math.floor(Math.random() * backgroundColors.length));
+  const [showingOld, setShowingOld] = useState(false);
 
   async function updateLocalStorage() {
     // Your web app's Firebase configuration
@@ -118,23 +125,47 @@ function App() {
     const hamsters = JSON.parse(window.localStorage.getItem("hamster_image_urls"));
     console.log(hamsters.length);
     setImage(hamsters[Math.floor(Math.random() * hamsters.length)]);
-    setBgColor(backgroundColors[Math.floor(Math.random() * backgroundColors.length)]);
   }
+
+  function swapImage() {
+    const old_img = window.localStorage.getItem("old_img");
+    const new_img = window.localStorage.getItem("new_img");
+    if (old_img) {
+      if (showingOld) {
+        setImage(new_img);
+        setShowingOld(false);
+      }
+      else {
+        setImage(old_img);
+        setShowingOld(true);
+      }
+    }
+  }
+
   useEffect(() => {
     if (window.localStorage.getItem("hamster_image_urls") === null) {
       updateLocalStorage();
     }
+    window.localStorage.setItem("old_img", window.localStorage.getItem("new_img"));
     const hamsters = JSON.parse(window.localStorage.getItem("hamster_image_urls"));
-    setImage(hamsters[Math.floor(Math.random() * hamsters.length)]);
-    setBgColor(backgroundColors[Math.floor(Math.random() * backgroundColors.length)]);
+    const new_img = hamsters[Math.floor(Math.random() * hamsters.length)];
+    window.localStorage.setItem("new_img", new_img);
+    setImage(new_img);
+    setBgColor(Math.floor(Math.random() * backgroundColors.length));
   }, [])
 
   
   return (
-    <div className={"w-full h-full absolute " + bgColor} >
+    <div className={"w-full h-full absolute " + backgroundColors[bgColor]} >
       <ImageDisplay image={image}/>
       <div className="absolute bottom-0 right-0 m-4">
         <img className="w-10 h-10 cursor-pointer " src={refreshSVG} alt="refresh" onClick={reloadImages} />
+      </div>
+      <div className='absolute top-0 right-0 m-4'>
+        <img className='w-10 h-10 cursor-pointer' src={showingOld ? chevronRight : chevronLeft} alt="arrow" onClick={swapImage}/>
+      </div>
+      <div className="absolute top-0 left-0 m-4">
+        <img className="w-10 h-10 cursor-pointer " src={colorIcon} alt="color" onClick={() => {setBgColor((bgColor+1) % backgroundColors.length)}}/>
       </div>
       <PopUpMessage/>
     </div>
