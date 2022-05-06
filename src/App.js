@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, listAll, getDownloadURL} from "firebase/storage";
 import refreshSVG from './refresh.svg';
-import hamsterWheelSVG from './hamsterWheel.svg';
 import mailOpen from './mailOpen.svg';
 import mailClosed from './mailClosed.svg';
 import chevronLeft from './chevronLeft.svg';
 import chevronRight from './chevronRight.svg';
 import colorIcon from './color.svg';
+import Board from './Board';
 
 const backgroundColors = [
   "bg-rose-200",
@@ -30,30 +30,6 @@ const backgroundColors = [
   "bg-fuchsia-200",
   "bg-pink-200",
 ];
-
-function ImageDisplay(props) {
-  const [loading, setLoading] = useState(true);
-  const imageLoaded = () => {
-    setLoading(false);
-  };
-  useEffect(() => {
-    setLoading(true);
-  }, [props.image]);
-  return (
-    <div className='bg-transparent flex h-full w-full absolute items-center justify-center'>
-      <div className={loading ? "block" : "hidden"}>
-        <img className="w-full h-full animate-spin " src={hamsterWheelSVG} alt="hamster wheel" />
-      </div>
-      <div className={(loading ? "hidden" : "block") + " h-2/3 w-2/3 flex items-center justify-center"}>
-        <img className="w-auto h-auto max-h-full rounded-lg object-contain" 
-          src={props.image} alt='hamster'
-          onLoad={imageLoaded}
-          />
-        </div>
-      </div>
-  )
-}
-
 
 
 function PopUpMessage() {
@@ -163,7 +139,8 @@ function App() {
   
   return (
     <div className={"w-full h-full absolute " + backgroundColors[bgColor]} >
-      <ImageDisplay image={image}/>
+      {/* <ImageDisplay image={image}/> */}
+      <Board image={image} />
       <div className="absolute bottom-0 right-0 m-4">
         <img className="w-10 h-10 cursor-pointer " src={refreshSVG} alt="refresh" onClick={reloadImages} />
       </div>
