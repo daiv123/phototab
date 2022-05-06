@@ -91,6 +91,7 @@ function App() {
   const [image, setImage] = useState(null);
   const [bgColor, setBgColor] = useState(Math.floor(Math.random() * backgroundColors.length));
   const [showingOld, setShowingOld] = useState(false);
+  const [loadingCache, setLoadingCache] = useState(false);
 
   async function updateLocalStorage() {
     // Your web app's Firebase configuration
@@ -125,12 +126,12 @@ function App() {
     await Promise.all(promises);
     console.log(urlList);
     window.localStorage.setItem("hamster_image_urls", JSON.stringify(urlList));
+    setLoadingCache(false);
+    pickImage();
   }
   function reloadImages() {
+    setImage(null);
     updateLocalStorage();
-    const hamsters = JSON.parse(window.localStorage.getItem("hamster_image_urls"));
-    console.log(hamsters.length);
-    setImage(hamsters[Math.floor(Math.random() * hamsters.length)]);
   }
 
   function swapImage() {
@@ -148,16 +149,25 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    if (window.localStorage.getItem("hamster_image_urls") === null) {
-      updateLocalStorage();
-    }
+  function pickImage() {
     window.localStorage.setItem("old_img", window.localStorage.getItem("new_img"));
     const hamsters = JSON.parse(window.localStorage.getItem("hamster_image_urls"));
     const new_img = hamsters[Math.floor(Math.random() * hamsters.length)];
     window.localStorage.setItem("new_img", new_img);
     setImage(new_img);
     setBgColor(Math.floor(Math.random() * backgroundColors.length));
+  }
+
+  useEffect(() => {
+    if (window.localStorage.getItem("hamster_image_urls") === null) {
+      console.log("loading")
+      setLoadingCache(true);
+      updateLocalStorage();
+    }
+    else {
+      console.log("picking")
+      pickImage();
+    }
   }, [])
 
   
