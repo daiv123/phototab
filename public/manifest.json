@@ -2,10 +2,11 @@
   "name": "Hamster Tab",
   "description": "A tab that contains a hamster",
   "icons" : {
-    "48": "icon48.png"
+    "48": "icon48.png",
+    "128": "icon128.png"
   },
-  "version": "1.0",
-  "manifest_version": 2,
+  "version": "2.1",
+  "manifest_version": 3,
   "permissions" : ["storage"],
   "chrome_url_overrides" : {
       "newtab": "index.html"
