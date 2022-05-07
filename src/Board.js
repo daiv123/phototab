@@ -6,7 +6,7 @@ import crossSVG from './cross.svg';
 import centerSVG from './center.svg';
 import circleCrossSVG from './circleCross.svg';
 
-const boardSize = {w: 1024, h: 780};
+const boardSize = {w: 1300, h: 550};
 
 export default function Board(props) {
   const [notes, setNotes] = useState([]);
@@ -193,7 +193,7 @@ function ImageDisplay(props) {
   const [loading, setLoading] = useState(true);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const size = 512;
+  const size = 384;
   useEffect(() => {
     const oldPos = window.localStorage.getItem("image_pos");
 
