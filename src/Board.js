@@ -4,6 +4,8 @@ import { motion, useMotionValue } from "framer-motion"
 import plusSVG from './plus.svg';
 import crossSVG from './cross.svg';
 import centerSVG from './center.svg';
+import circleCrossSVG from './circleCross.svg';
+
 const boardSize = {w: 1024, h: 780};
 
 export default function Board(props) {
@@ -96,6 +98,14 @@ export default function Board(props) {
     setZIndexes(newZIndexes);
     window.localStorage.setItem("zIndexes", JSON.stringify(newZIndexes));
   }
+  function deleteAllNotes() {
+    setNotes([]);
+    setPositions([]);
+    setZIndexes([]);
+    window.localStorage.removeItem("notes");
+    window.localStorage.removeItem("positions");
+    window.localStorage.removeItem("zIndexes");
+  }
 
   return (
     <div className='h-full w-full flex absolute items-center justify-center overflow-hidden'>
@@ -116,6 +126,9 @@ export default function Board(props) {
       </div>
       <div className='absolute w-10 h-10 m-4 bottom-0 right-16'>
         <img className='cursor-pointer' src={plusSVG} onClick={addNote} alt="plus"/>
+      </div>
+      <div className='absolute w-10 h-10 m-4 bottom-0 right-32'>
+        <img className='cursor-pointer' src={circleCrossSVG} onClick={deleteAllNotes} alt="cross"/>
       </div>
     </div>
   );
