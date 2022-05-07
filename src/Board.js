@@ -193,7 +193,7 @@ function ImageDisplay(props) {
   const [loading, setLoading] = useState(true);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
+  const size = 512;
   useEffect(() => {
     const oldPos = window.localStorage.getItem("image_pos");
 
@@ -214,14 +214,14 @@ function ImageDisplay(props) {
   }
 
   return (
-    <motion.div className={' w-96 h-96 group flex items-center justify-center cursor-move ' + 
+    <motion.div className={'group flex items-center justify-center cursor-move ' + 
       'rounded-lg hover:shadow-xl hover:bg-stone-100/10 transition-shadow duration-200'}
       drag
       dragConstraints={{
-        top: -1*boardSize.h/2 + 96*2,
-        right: boardSize.w/2 - 96*2,
-        bottom: boardSize.h/2 - 96*2,
-        left: -1*boardSize.w/2 + 96*2,
+        top: -1*boardSize.h/2 + size/2,
+        right: boardSize.w/2 - size/2,
+        bottom: boardSize.h/2 - size/2,
+        left: -1*boardSize.w/2 + size/2,
       }}
       onDragStart={()=>props.onDragStart()}
       onDragEnd={(e, info) => {
@@ -233,7 +233,7 @@ function ImageDisplay(props) {
         
         window.localStorage.setItem("image_pos", JSON.stringify({x: x.get(), y: y.get()}));
       }}
-      style={{x, y}}
+      style={{x, y, width: size, height: size}}
     >
       <div className='absolute top-0 left-0 right-0 bottom-0'></div>
 
