@@ -62,7 +62,6 @@ function PopUpMessage() {
 }
 function PopUpShare(props) {
   const [show, setShow] = useState(false);
-  const [link, setLink] = useState(false);
   const handleClick = () => {
     setShow(!show);
   };
@@ -209,7 +208,7 @@ function App() {
       console.log(name);
       console.log(name.substring(name.length-3, name.length))
     }
-    while (name.substring(name.length-3, name.length) == "mov")
+    while (name.substring(name.length-3, name.length) === "mov")
     const new_img = hamsters[index];
     window.localStorage.setItem("new_img", new_img);
     setImage(new_img);
