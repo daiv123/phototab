@@ -66,7 +66,7 @@ function PopUpShare(props) {
     setShow(!show);
   };
   function getLink() {
-    let link = "https://melodious-pavlova-32b789.netlify.app/?";
+    let link = "https://hamstertab.netlify.app?";
     link += "name=" + props.name;
     link += "&bgColor=" + props.bgColor;
     return link;
