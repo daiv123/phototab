@@ -10,6 +10,7 @@ import chevronLeft from './chevronLeft.svg';
 import chevronRight from './chevronRight.svg';
 import colorIcon from './color.svg';
 import Board from './Board';
+import { storage } from 'googleapis/build/src/apis/storage';
 
 const backgroundColors = [
   "bg-rose-200",
@@ -89,9 +90,11 @@ function App() {
     const res = await listAll(hamstersRef);
     const hamsters = res.items;
     let urlList = [];
+    let nameList = [];
     let promises = [];
     hamsters.forEach(hamster => {
       console.log(hamster)
+      nameList.push(hamster.name);
       promises.push(getDownloadURL(hamster)
         .then((res) => {
           urlList.push(res);
@@ -102,6 +105,7 @@ function App() {
     await Promise.all(promises);
     console.log(urlList);
     window.localStorage.setItem("hamster_image_urls", JSON.stringify(urlList));
+    window.localStorage.setItem("hamster_image_names", JSON.stringify(nameList));
     setLoadingCache(false);
     pickImage();
   }
@@ -124,6 +128,24 @@ function App() {
       }
     }
   }
+  // function getURLParamImage() {
+  //   const queryParameters = new URLSearchParams(window.location.search);
+  //   const name = queryParameters.get("name");
+  //   console.log(name);
+  //   if (name) {
+  //     const imageRef = ref(storage, 'hamsters/'+name);
+  //     const promise = getDownloadURL(imageRef)
+  //       .then((url) => {
+  //         setImage(url);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         return false;
+  //       })
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   function pickImage() {
     window.localStorage.setItem("old_img", window.localStorage.getItem("new_img"));
