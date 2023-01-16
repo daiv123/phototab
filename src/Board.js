@@ -191,8 +191,8 @@ function Note(props) {
 }
 function ImageDisplay(props) {
   const [loading, setLoading] = useState(true);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  const x = useMotionValue(0.00001);
+  const y = useMotionValue(0.00001);
   const size = 384;
   useEffect(() => {
     const oldPos = window.localStorage.getItem("image_pos");
@@ -210,7 +210,7 @@ function ImageDisplay(props) {
   function reset_pos() {
     x.set(0.00001);
     y.set(0.00001);
-    window.localStorage.setItem("image_pos", JSON.stringify({x: 0, y: 0}));
+    window.localStorage.setItem("image_pos", JSON.stringify({x: 0.00001, y: 0.00001}));
   }
 
   return (
@@ -244,7 +244,7 @@ function ImageDisplay(props) {
           "h-full w-full flex items-center justify-center bg-transparent rounded-lg"}>
         <img className="w-fit h-fit max-h-full max-w-full rounded-lg object-contain select-none"
           src={props.image} alt='hamster'
-          onLoad={() => {setLoading(false); console.log("a")}}/>
+          onLoad={() => {setLoading(false)}}/>
       </div>
       <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-10 h-10 top-0 left-0">
         <button onClick={reset_pos}>

@@ -67,6 +67,7 @@ function PopUpShare(props) {
   };
   function getLink() {
     let link = "https://hamstertab.netlify.app?";
+    // let link = "http://localhost:3000?";
     link += "name=" + props.name;
     link += "&bgColor=" + props.bgColor;
     return link;
@@ -99,7 +100,7 @@ function App() {
   const [isFixedImage, setIsFixedImage] = useState(false)
   const [bgColor, setBgColor] = useState(Math.floor(Math.random() * backgroundColors.length));
   const [showingOld, setShowingOld] = useState(false);
-  const [loadingCache, setLoadingCache] = useState(false);
+  const [cacheLoaded, setCacheLoaded] = useState(false);
   let storage;
 
   async function updateLocalStorage() {
@@ -113,7 +114,7 @@ function App() {
     let nameList = [];
     let promises = [];
     hamsters.forEach(hamster => {
-      console.log(hamster)
+      // console.log(hamster)
       promises.push(getDownloadURL(hamster)
         .then((res) => {
           urlList.push(res);
@@ -126,7 +127,7 @@ function App() {
     console.log(urlList);
     window.localStorage.setItem("hamster_image_urls", JSON.stringify(urlList));
     window.localStorage.setItem("hamster_image_names", JSON.stringify(nameList));
-    setLoadingCache(false);
+    setCacheLoaded(true);
   }
 
   function reloadImages() {
@@ -212,27 +213,29 @@ function App() {
     const new_img = hamsters[index];
     window.localStorage.setItem("new_img", new_img);
     setImage(new_img);
-    setBgColor(Math.floor(Math.random() * backgroundColors.length));
   }
 
   useEffect(() => {
     if (window.localStorage.getItem("hamster_image_urls") === null) {
       console.log("loading")
-      setLoadingCache(true);
       updateLocalStorage();
     }
-
-    if (!getURLParamImage()) {
-      console.log("picking");
-      pickImage();
+    else {
+      setCacheLoaded(true);
     }
   }, [])
-
+  useEffect(() => {
+    if (cacheLoaded) {
+      pickImage()
+    }
+  }, [cacheLoaded])
 
   useEffect(() => {
-    console.log("image changed")
-    console.log(image)
-    setName(getNameFromURL(image));
+    if (image) {
+      console.log("image changed")
+      console.log(image)
+      setName(getNameFromURL(image));
+    }
   }, [image])
   
   return (
