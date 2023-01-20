@@ -216,7 +216,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (window.localStorage.getItem("hamster_image_urls") === null) {
+    if (window.localStorage.getItem("hamster_image_names") === null) {
       console.log("loading")
       updateLocalStorage();
     }
