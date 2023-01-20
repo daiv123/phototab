@@ -66,8 +66,8 @@ function PopUpShare(props) {
     setShow(!show);
   };
   function getLink() {
-    let link = "https://hamstertab.netlify.app?";
-    // let link = "http://localhost:3000?";
+    // let link = "https://hamstertab.netlify.app?";
+    let link = "http://localhost:3000?";
     link += "name=" + props.name;
     link += "&bgColor=" + props.bgColor;
     return link;
@@ -226,7 +226,9 @@ function App() {
   }, [])
   useEffect(() => {
     if (cacheLoaded) {
-      pickImage()
+      if (!getURLParamImage()) {
+        pickImage()
+      }
     }
   }, [cacheLoaded])
 
